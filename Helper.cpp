@@ -3,18 +3,25 @@
 #include <fstream>
 using namespace std;
 
+
 //convert a pkt-line to actual value
-string Helper::convert(istream& is){
+int Helper::convert(istream& is, string& line){
     int len=Helper::readlen(is);
-    if(len==0)
-        exit(0);
-    if(len<4||len>65516){
-        cout<<"length not valid，try again"<<endl;
-        exit(0);
+    if(len==0){
+        cout<<"flush-pkt"<<endl;
+        return STATUS(FLUSH_PKT);
     }
-    string line=Helper::readremain(is,len-4);
+    if(len<4){
+        cout<<"length to short，try again"<<endl;
+        return STATUS(TOOSHORT);
+    }
+    if(len>65516){
+        cout<<"length to long，try again"<<endl;
+        return STATUS(TOOLONG);
+    }
+    line=Helper::readremain(is,len-4);
     is.get();
-    return line;
+    return STATUS(VALID);
 }
 
 //read 4 bytes in hexadecimal from is and return corresponding decimal number

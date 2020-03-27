@@ -9,8 +9,12 @@
 using namespace std;
 class Helper{
 public:
-    static string convert(istream& is);
+    static int convert(istream& is, string& line);
     static int readlen(istream& is);
     static string readremain(istream& is,int len);
     static int hextoint(string s);
+};
+enum STATUS
+{
+	VALID,FLUSH_PKT,TOOLONG,TOOSHORT
 };
